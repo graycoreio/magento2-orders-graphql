@@ -1,0 +1,105 @@
+type Query {
+    graycoreOrders: GraycoreOrders @resolver(class: "Graycore\\OrderGraphQl\\Model\\Orders") @cache(cacheable: false)
+}
+
+type GraycoreOrderAddress {
+    # DaffOrderAddress
+    order_id: Int
+    # DaffPersonalAddress
+    prefix: String @doc(description: "An honorific such as Dr. Mr. or Mrs.")
+    suffix: String @doc(description: "A value such as Sr. Jr. or III")
+    firstname: String @doc(description: "The first name of the person associated with the shipping/billing address")
+    middlename: String @doc(description: "The middle name of the person associated with the shipping/billing address")
+    lastname: String @doc(description: "The family name of the person associated with the shipping/billing address")
+    telephone: String @doc(description: "The telephone number")
+    email: String
+    # DaffAddress
+    street: [String]
+    city: String @doc(description: "The city or town")
+    region: String
+    region_id: String
+    country_code: String @doc(description: "The customers country")
+    postcode: String @doc(description: "The customers ZIP or postal code")
+}
+
+type GraycoreOrderItem {
+    qty_ordered: Int
+    qty_canceled: Int
+    qty_fulfilled: Int
+    image: String
+    order_id: String
+    created_at: String
+    updated_at: String
+    product_id: Int
+    sku: String
+    name: String
+    weight: Float
+    qty: Int
+    price: Float
+    discount_percent: Float
+    discount_amount: Float
+    tax_percent: Float
+    tax_amount: Float
+    row_total: Float
+    row_total_with_discount: Float
+    row_weight: Float
+    tax_before_discount: Float
+}
+
+type GraycoreOrderShipmentTracking {
+    tracking_number: String
+    carrier: String
+    title: String
+}
+
+type GraycoreOrderShipmentItem {
+    item: GraycoreOrderItem
+    qty: Int
+}
+
+type GraycoreOrderShipment {
+    tracking: [GraycoreOrderShipmentTracking]
+    items: [GraycoreOrderShipmentItem]
+}
+
+type GraycoreOrderPayment {
+    payment_id: Int
+    order_id: Int
+    method: String
+    cc_type: String
+    cc_last4: String
+    cc_owner: String
+    cc_exp_month: String
+    cc_exp_year: String
+}
+
+type GraycoreOrderInvoice {
+    items: [GraycoreOrderShipmentItem]
+    grand_total: Float
+    subtotal: Float
+    billing_address: GraycoreOrderAddress
+    shipping_address: GraycoreOrderAddress
+}
+
+type GraycoreOrder @doc(description: "Order mapping fields") {
+    id: Int!
+    order_number: String @doc(description: "The order number")
+    customer_id: Int
+    created_at: String
+    updated_at: String
+    grand_total: Float
+    subtotal: Float
+    status: String
+    applied_codes: [String]!
+    items: [GraycoreOrderItem]
+    billing_address: GraycoreOrderAddress
+    shipping_address: GraycoreOrderAddress
+    shipments: [GraycoreOrderShipment]
+    payment: GraycoreOrderPayment
+    invoices: [GraycoreOrderInvoice]
+    credits: [GraycoreOrderInvoice]
+}
+
+type GraycoreOrders {
+    items: [GraycoreOrder] @doc(description: "Array of orders")
+}
