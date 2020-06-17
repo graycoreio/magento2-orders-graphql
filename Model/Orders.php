@@ -3,25 +3,14 @@ declare(strict_types=1);
 
 namespace Graycore\OrderGraphQl\Model;
 
-use Magento\Framework\GraphQl\Config\Element\Field;
-use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
-use Magento\Framework\GraphQl\Query\ResolverInterface;
-use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Magento\GraphQl\Model\Query\ContextInterface;
-use Magento\Sales\Model\ResourceModel\Order\CollectionFactoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 
 /**
  * Orders data resolver
  */
-class Orders implements ResolverInterface
+class Orders
 {
-    /**
-     * @var CollectionFactoryInterface
-     */
-    private $collectionFactory;
-
     /**
      * @var ProductRepositoryInterface
      */
@@ -33,16 +22,13 @@ class Orders implements ResolverInterface
     protected $_storeManager;
 
     /**
-     * @param CollectionFactoryInterface $collectionFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
-        CollectionFactoryInterface $collectionFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         ProductRepositoryInterface $productRepository
     ) {
-        $this->collectionFactory = $collectionFactory;
         $this->_storeManager = $storeManager;
         $this->productRepository = $productRepository;
     }
@@ -283,46 +269,26 @@ class Orders implements ResolverInterface
         return array_map($buildCredit, $order->getCreditmemosCollection()->getItems());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function resolve(
-        Field $field,
-        ContextInterface $context,
-        ResolveInfo $info,
-        array $value = null,
-        array $args = null
-    ) {
-        if (false === $context->getExtensionAttributes()->getIsCustomer()) {
-            throw new GraphQlAuthorizationException(__('The current customer isn\'t authorized.'));
-        }
-
-        $userId = $context->getUserId();
-        $items = [];
-        $orders = $this->collectionFactory->create($userId);
-
-        /** @var \Magento\Sales\Model\Order $order */
-        foreach ($orders as $order) {
-            $coupon = $order->getCouponCode();
-            $items[] = [
-                'id' => $order->getId(),
-                'order_number' => $order->getIncrementId(),
-                'customer_id' => $userId,
-                'created_at' => $order->getCreatedAt(),
-                'updated_at' => $order->getUpdatedAt(),
-                'grand_total' => $order->getGrandTotal(),
-                'subtotal' => $order->getSubtotal(),
-                'status' => $order->getStatus(),
-                'shipments' => $this->getShipments($order),
-                'applied_codes' => $coupon ? [$coupon] : [],
-                'items' => $this->getOrderItems($order),
-                'shipping_address' => $this->getAddress($order->getShippingAddress(), $order->getId()),
-                'billing_address' => $this->getAddress($order->getBillingAddress(), $order->getId()),
-                'payment' => $this->getPayment($order),
-                'invoices' => $this->getInvoices($order),
-                'credits' => $this->getCreditMemos($order)
-            ];
-        }
-        return ['items' => $items];
+    /** @param \Magento\Sales\Model\Order $order */
+    function getOrder($order, ?int $userId) {
+        $coupon = $order->getCouponCode();
+        return [
+            'id' => $order->getId(),
+            'order_number' => $order->getIncrementId(),
+            'customer_id' => $userId,
+            'created_at' => $order->getCreatedAt(),
+            'updated_at' => $order->getUpdatedAt(),
+            'grand_total' => $order->getGrandTotal(),
+            'subtotal' => $order->getSubtotal(),
+            'status' => $order->getStatus(),
+            'shipments' => $this->getShipments($order),
+            'applied_codes' => $coupon ? [$coupon] : [],
+            'items' => $this->getOrderItems($order),
+            'shipping_address' => $this->getAddress($order->getShippingAddress(), $order->getId()),
+            'billing_address' => $this->getAddress($order->getBillingAddress(), $order->getId()),
+            'payment' => $this->getPayment($order),
+            'invoices' => $this->getInvoices($order),
+            'credits' => $this->getCreditMemos($order)
+        ];
     }
 }

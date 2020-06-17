@@ -1,5 +1,8 @@
 type Query {
-    graycoreOrders: GraycoreOrders @resolver(class: "Graycore\\OrderGraphQl\\Model\\Orders") @cache(cacheable: false)
+    graycoreCustomerOrders: GraycoreOrders @resolver(class: "Graycore\\OrderGraphQl\\Model\\CustomerOrders") @cache(cacheable: false)
+    graycoreGuestOrders(
+        cart_id: String
+    ): GraycoreOrders @resolver(class: "Graycore\\OrderGraphQl\\Model\\GuestOrders") @cache(cacheable: false)
 }
 
 type GraycoreOrderAddress {
