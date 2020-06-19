@@ -72,6 +72,13 @@ class GuestOrders implements ResolverInterface
 
     private function getOrderForCart(string $cartHash) {
         $orderId = $this->getCart($cartHash)->getReservedOrderId();
+
+        if (!$orderId) {
+            throw new GraphQlNoSuchEntityException(
+                __('Could not find an order associated with cart with ID "%masked_cart_id"', ['masked_cart_id' => $cartHash])
+            );
+        }
+
         $orders = $this->collectionFactory->create(null)->getItems();
 
         /** @param \Magento\Sales\Api\Data\OrderInterface $order */

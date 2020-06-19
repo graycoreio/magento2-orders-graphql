@@ -1,13 +1,13 @@
 type Query {
-    graycoreCustomerOrders: GraycoreOrders @resolver(class: "Graycore\\OrderGraphQl\\Model\\CustomerOrders") @cache(cacheable: false)
+    graycoreCustomerOrders: GraycoreOrders @doc(description: "Retrieves all order associated with the customer's account. Throws an error if there is not an authorized customer.") @resolver(class: "Graycore\\OrderGraphQl\\Model\\CustomerOrders") @cache(cacheable: false)
     graycoreGuestOrders(
         cart_id: String
-    ): GraycoreOrders @resolver(class: "Graycore\\OrderGraphQl\\Model\\GuestOrders") @cache(cacheable: false)
+    ): GraycoreOrders @doc(description: "Retrieves the order associated with the specified cart. Throws an error if the cart is not found or there isn't an order associated with it.") @resolver(class: "Graycore\\OrderGraphQl\\Model\\GuestOrders") @cache(cacheable: false)
 }
 
 type GraycoreOrderAddress {
     # DaffOrderAddress
-    order_id: Int
+    order_id: Int @doc(description: "The order ID")
     # DaffPersonalAddress
     prefix: String @doc(description: "An honorific such as Dr. Mr. or Mrs.")
     suffix: String @doc(description: "A value such as Sr. Jr. or III")
@@ -15,37 +15,37 @@ type GraycoreOrderAddress {
     middlename: String @doc(description: "The middle name of the person associated with the shipping/billing address")
     lastname: String @doc(description: "The family name of the person associated with the shipping/billing address")
     telephone: String @doc(description: "The telephone number")
-    email: String
+    email: String @doc(description: "The customer email associated with this address.")
     # DaffAddress
-    street: [String]
+    street: [String]  @doc(description: "The street address")
     city: String @doc(description: "The city or town")
-    region: String
-    region_id: String
+    region: String  @doc(description: "The region")
+    region_id: String @doc(description: "The region ID or code")
     country_code: String @doc(description: "The customers country")
     postcode: String @doc(description: "The customers ZIP or postal code")
 }
 
 type GraycoreOrderItem {
-    qty_ordered: Int
-    qty_canceled: Int
-    qty_fulfilled: Int
-    image: String
-    order_id: String
+    qty_ordered: Int @doc(description: "The number of items ordered.")
+    qty_canceled: Int @doc(description: "The number of items cancelled.")
+    qty_fulfilled: Int @doc(description: "The number of items fulfilled.")
+    image: String @doc(description: "The image of the product for this order item.")
+    order_id: String @doc(description: "The order ID.")
     created_at: String
     updated_at: String
-    product_id: Int
-    sku: String
-    name: String
-    weight: Float
-    qty: Int
-    price: Float
-    discount_percent: Float
-    discount_amount: Float
-    tax_percent: Float
-    tax_amount: Float
-    row_total: Float
-    row_total_with_discount: Float
-    row_weight: Float
+    product_id: Int @doc(description: "The ID of the product for this order item.")
+    sku: String @doc(description: "The SKU of the product for this order item.")
+    name: String @doc(description: "The name of the order item.")
+    weight: Float @doc(description: "The weight for this individual order item.")
+    qty: Int @doc(description: "The number of items for this order item.")
+    price: Float @doc(description: "The total price for this order item.")
+    discount_percent: Float @doc(description: "The discount percentage for this order item.")
+    discount_amount: Float @doc(description: "The discount amount for this order item.")
+    tax_percent: Float @doc(description: "The tax percent for this order item.")
+    tax_amount: Float @doc(description: "The tax amount for this order item.")
+    row_total: Float @doc(description: "The row total for this order item.")
+    row_total_with_discount: Float @doc(description: "The row total for this order item. Includes all discounts.")
+    row_weight: Float @doc(description: "The total weight for these order item.")
     tax_before_discount: Float
 }
 
