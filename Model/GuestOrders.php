@@ -67,11 +67,20 @@ class GuestOrders implements ResolverInterface
             );
         }
 
+        // TODO: throw error if cart is associated with a customer
+
         return $cart;
     }
 
     private function getOrderForCart(string $cartHash) {
         $orderId = $this->getCart($cartHash)->getReservedOrderId();
+
+        if (!$orderId) {
+            throw new GraphQlNoSuchEntityException(
+                __('Could not find an order associated with cart with ID "%masked_cart_id"', ['masked_cart_id' => $cartHash])
+            );
+        }
+
         $orders = $this->collectionFactory->create(null)->getItems();
 
         /** @param \Magento\Sales\Api\Data\OrderInterface $order */
@@ -96,6 +105,6 @@ class GuestOrders implements ResolverInterface
 
         $items[] = $this->orders->getOrder($this->getOrderForCart($args['cart_id']), null);
 
-        return ['items' => $items];
+        return ['orders' => $items];
     }
 }

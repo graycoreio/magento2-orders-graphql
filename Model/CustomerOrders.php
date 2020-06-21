@@ -59,6 +59,6 @@ class CustomerOrders implements ResolverInterface
         foreach ($orders as $order) {
             $items[] = $this->orders->getOrder($order, $userId);
         }
-        return ['items' => $items];
+        return ['orders' => $items];
     }
 }
