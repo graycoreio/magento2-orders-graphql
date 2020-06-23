@@ -95,7 +95,7 @@ class Orders
             'street' => $address->getStreet(),
             'city' => $address->getCity(),
             'region' => $address->getRegion(),
-            'region_id' => $address->getRegionId(),
+            'region_id' => $address->getRegionCode(),
             'country_code' => $address->getCountryId(),
             'postcode' => $address->getPostcode(),
         ];

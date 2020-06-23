@@ -19,9 +19,9 @@ type GraycoreOrderAddress {
     # DaffAddress
     street: [String]  @doc(description: "The street address")
     city: String @doc(description: "The city or town")
-    region: String  @doc(description: "The region")
-    region_id: String @doc(description: "The region ID or code")
-    country_code: String @doc(description: "The customers country")
+    region: String  @doc(description: "The region name")
+    region_id: String @doc(description: "The two character region code")
+    country_code: String @doc(description: "The two character code for the customer\'s country")
     postcode: String @doc(description: "The customers ZIP or postal code")
 }
 
