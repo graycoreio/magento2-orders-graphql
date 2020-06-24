@@ -21,7 +21,7 @@ type GraycoreOrderAddress {
     city: String @doc(description: "The city or town")
     region: String  @doc(description: "The region name")
     region_id: String @doc(description: "The two character region code")
-    country_code: String @doc(description: "The two character code for the customer\'s country")
+    country_code: String @doc(description: "The two character code for the customer's country")
     postcode: String @doc(description: "The customers ZIP or postal code")
 }
 
@@ -82,6 +82,7 @@ type GraycoreOrderInvoice {
     subtotal: Float
     billing_address: GraycoreOrderAddress
     shipping_address: GraycoreOrderAddress
+    payment: GraycoreOrderPayment
 }
 
 type GraycoreOrder @doc(description: "Order mapping fields") {

@@ -218,7 +218,7 @@ class Orders
                 'subtotal' => $invoice->getSubtotal(),
                 'billing_address' => $this->getAddress($invoice->getBillingAddress(), $order->getId()),
                 'shipping_address' => $this->getAddress($invoice->getShippingAddress(), $order->getId()),
-                // 'payment' => $invoice->getPayment(),
+                'payment' => $order->getPayment(),
                 // 'shipping_method' => $invoice->getShipmentTracking(),
             ];
         };
