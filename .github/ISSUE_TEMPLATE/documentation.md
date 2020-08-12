@@ -28,10 +28,10 @@ ISSUES MISSING IMPORTANT INFORMATION MAY BE CLOSED WITHOUT INVESTIGATION.
 ## Environment
 
 <pre><code>
-magento2-graphql-orders-module version: X.Y.Z
+magento2-orders-graphql version: X.Y.Z
 Magento version: X.Y.Z 
 PHP Version version: X.Y.Z 
-<!-- Check whether this is still an issue in the most recent magento2-graphql-orders-module version -->
+<!-- Check whether this is still an issue in the most recent magento2-orders-graphql version -->
 
 Others:
 <!-- Anything else relevant?  Operating system version, IDE, package manager, HTTP server, ... -->
