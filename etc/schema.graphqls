@@ -50,58 +50,58 @@ type GraycoreOrderItem {
 }
 
 type GraycoreOrderShipmentTracking {
-    tracking_number: String
-    carrier: String
-    title: String
+    tracking_number: String @doc(description: "The tracking number for the shipment.")
+    carrier: String @doc(description: "The carrier being used for the shipment.")
+    title: String @doc(description: "The type of the shipping method used for the shipment.")
 }
 
 type GraycoreOrderShipmentItem {
-    item: GraycoreOrderItem
-    qty: Int
+    item: GraycoreOrderItem @doc(description: "The order item associated with this shipment item.")
+    qty: Int @doc(description: "The quantity of the item included in this shipment item.")
 }
 
 type GraycoreOrderShipment {
-    tracking: [GraycoreOrderShipmentTracking]
-    items: [GraycoreOrderShipmentItem]
+    tracking: [GraycoreOrderShipmentTracking] @doc(description: "The tracking for this shipment.")
+    items: [GraycoreOrderShipmentItem] @doc(description: "The items included in this shipment.")
 }
 
 type GraycoreOrderPayment {
-    payment_id: Int
-    order_id: Int
-    method: String
-    cc_type: String
-    cc_last4: String
-    cc_owner: String
-    cc_exp_month: String
-    cc_exp_year: String
+    payment_id: Int @doc(description: "The payment ID.")
+    order_id: Int @doc(description: "The order ID.")
+    method: String @doc(description: "The payment method used to place the order.")
+    cc_type: String @doc(description: "The credit card type.")
+    cc_last4: String @doc(description: "The credit card number's last 4 digits.")
+    cc_owner: String @doc(description: "The credit card owner.")
+    cc_exp_month: String @doc(description: "The credit card month of expiration.")
+    cc_exp_year: String @doc(description: "The credit card year of expiration.")
 }
 
 type GraycoreOrderInvoice {
-    items: [GraycoreOrderShipmentItem]
-    grand_total: Float
-    subtotal: Float
-    billing_address: GraycoreOrderAddress
-    shipping_address: GraycoreOrderAddress
-    payment: GraycoreOrderPayment
+    items: [GraycoreOrderShipmentItem] @doc(description: "The items being shipped for this invoice.")
+    grand_total: Float @doc(description: "The grand total of this invoice.")
+    subtotal: Float @doc(description: "The subtotal of this invoice.")
+    billing_address: GraycoreOrderAddress @doc(description: "The billing address of this invoice.")
+    shipping_address: GraycoreOrderAddress @doc(description: "The shipping address of this invoice.")
+    payment: GraycoreOrderPayment @doc(description: "The payment used for this invoice.")
 }
 
 type GraycoreOrder @doc(description: "Order mapping fields") {
-    id: Int!
+    id: Int! @doc(description: "The order ID.")
     order_number: String @doc(description: "The order number")
-    customer_id: Int
-    created_at: String
-    updated_at: String
-    grand_total: Float
-    subtotal: Float
-    status: String
-    applied_codes: [String]!
-    items: [GraycoreOrderItem]
-    billing_address: GraycoreOrderAddress
-    shipping_address: GraycoreOrderAddress
-    shipments: [GraycoreOrderShipment]
-    payment: GraycoreOrderPayment
-    invoices: [GraycoreOrderInvoice]
-    credits: [GraycoreOrderInvoice]
+    customer_id: Int @doc(description: "The customer ID.")
+    created_at: String @doc(description: "When the order was created.")
+    updated_at: String @doc(description: "When the order was last updated.")
+    grand_total: Float @doc(description: "The grand total of the order.")
+    subtotal: Float @doc(description: "The subtotal of the order.")
+    status: String @doc(description: "The current status of the order.")
+    applied_codes: [String]! @doc(description: "Any coupon codes that have been applied to the order.")
+    items: [GraycoreOrderItem] @doc(description: "All items included in the order.")
+    billing_address: GraycoreOrderAddress @doc(description: "The billing address for the order.")
+    shipping_address: GraycoreOrderAddress @doc(description: "The shipping address for the order.")
+    shipments: [GraycoreOrderShipment] @doc(description: "The shipments of the order.")
+    payment: GraycoreOrderPayment @doc(description: "The payment for the order.")
+    invoices: [GraycoreOrderInvoice] @doc(description: "The invoices for the order.")
+    credits: [GraycoreOrderInvoice] @doc(description: "Any credits applied to the order.")
 }
 
 type GraycoreOrders {

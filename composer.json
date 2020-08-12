@@ -1,6 +1,6 @@
 {
   "name": "graycore/magento2-orders-graphql",
-  "description": "N/A",
+  "description": "A Magento 2 module that adds a fully featured GraphQL orders endpoint.",
   "type": "magento2-module",
   "require": {
     "php": ">=7.0.0",
