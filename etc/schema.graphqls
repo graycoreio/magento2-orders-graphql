@@ -1,7 +1,7 @@
 type Query {
     graycoreCustomerOrders: GraycoreOrders @doc(description: "Retrieves all order associated with the customer's account. Throws an error if there is not an authorized customer.") @resolver(class: "Graycore\\OrderGraphQl\\Model\\CustomerOrders") @cache(cacheable: false)
     graycoreGuestOrders(
-        cart_id: String
+        cartId: String
     ): GraycoreOrders @doc(description: "Retrieves the order associated with the specified cart. Throws an error if the cart is not found or there isn't an order associated with it.") @resolver(class: "Graycore\\OrderGraphQl\\Model\\GuestOrders") @cache(cacheable: false)
 }
 

@@ -110,7 +110,7 @@ class GuestOrders implements ResolverInterface
     ) {
         $items = [];
 
-        $items[] = $this->orders->getOrder($this->getOrderForCart($args['cart_id']), null);
+        $items[] = $this->orders->getOrder($this->getOrderForCart($args['cartId']), null);
 
         return ['orders' => $items];
     }
