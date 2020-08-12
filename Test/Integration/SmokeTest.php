@@ -16,7 +16,8 @@ namespace Graycore\OrderGraphQl\Test\Integration;
  */
 class SmokeTest extends \PHPUnit\Framework\TestCase
 {
-    public function testItShouldPass() {
+    public function testItShouldPass()
+    {
         $this->assertEquals(true, true);
     }
 }

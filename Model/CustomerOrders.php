@@ -9,6 +9,7 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\GraphQl\Model\Query\ContextInterface;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactoryInterface;
+use Graycore\OrderGraphQl\Model\Orders;
 
 /**
  * Orders data resolver
@@ -31,7 +32,7 @@ class CustomerOrders implements ResolverInterface
      */
     public function __construct(
         CollectionFactoryInterface $collectionFactory,
-        \Graycore\OrderGraphQl\Model\Orders $orders
+        Orders $orders
     ) {
         $this->orders = $orders;
         $this->collectionFactory = $collectionFactory;

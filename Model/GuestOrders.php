@@ -11,6 +11,8 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactoryInterface;
+use Magento\Sales\Api\Data\OrderInterface;
+use Graycore\OrderGraphQl\Model\Orders;
 
 /**
  * Guest orders data resolver
@@ -45,7 +47,7 @@ class GuestOrders implements ResolverInterface
      */
     public function __construct(
         CollectionFactoryInterface $collectionFactory,
-        \Graycore\OrderGraphQl\Model\Orders $orders,
+        Orders $orders,
         MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         CartRepositoryInterface $cartRepository
     ) {
@@ -55,7 +57,8 @@ class GuestOrders implements ResolverInterface
         $this->collectionFactory = $collectionFactory;
     }
 
-    private function getCart(string $cartHash) {
+    private function getCart(string $cartHash)
+    {
         $cart = null;
 
         try {
@@ -72,18 +75,22 @@ class GuestOrders implements ResolverInterface
         return $cart;
     }
 
-    private function getOrderForCart(string $cartHash) {
+    private function getOrderForCart(string $cartHash)
+    {
         $orderId = $this->getCart($cartHash)->getReservedOrderId();
 
         if (!$orderId) {
             throw new GraphQlNoSuchEntityException(
-                __('Could not find an order associated with cart with ID "%masked_cart_id"', ['masked_cart_id' => $cartHash])
+                __(
+                    'Could not find an order associated with cart with ID "%masked_cart_id"',
+                    ['masked_cart_id' => $cartHash]
+                )
             );
         }
 
         $orders = $this->collectionFactory->create(null)->getItems();
 
-        /** @param \Magento\Sales\Api\Data\OrderInterface $order */
+        /** @param OrderInterface $order */
         $isCartOrder = function ($order) use ($orderId) {
             return $order->getIncrementId() === $orderId;
         };

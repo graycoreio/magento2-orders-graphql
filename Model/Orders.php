@@ -5,6 +5,7 @@ namespace Graycore\OrderGraphQl\Model;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Orders data resolver
@@ -26,18 +27,19 @@ class Orders
      * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        StoreManagerInterface $storeManager,
         ProductRepositoryInterface $productRepository
     ) {
         $this->_storeManager = $storeManager;
         $this->productRepository = $productRepository;
     }
 
-        /**
+    /**
      * @param \Magento\Sales\Api\Data\OrderItemInterface $item
      * @param \Magento\Sales\Model\Order $order
      */
-    function buildOrderItem($item, $order) {
+    private function buildOrderItem($item, $order)
+    {
         $productId = $item->getProductId();
         $storeId = $this->_storeManager->getStore()->getId();
         /** @var Product */
@@ -69,7 +71,8 @@ class Orders
     }
 
     /** @param \Magento\Sales\Model\Order $order */
-    function getOrderItems($order) {
+    private function getOrderItems($order)
+    {
         /** @param \Magento\Sales\Api\Data\OrderItemInterface $item */
         $buildOrderItems = function ($item) use ($order) {
             return $this->buildOrderItem($item, $order);
@@ -79,7 +82,8 @@ class Orders
     }
 
     /** @param \Magento\Sales\Api\Data\OrderAddressInterface $address */
-    function getAddress($address, $orderId) {
+    private function getAddress($address, $orderId)
+    {
         return [
             // DaffOrderAddress
             'order_id' => $orderId,
@@ -105,7 +109,8 @@ class Orders
      * @param \Magento\Sales\Model\Order $order
      * @param \Magento\Sales\Model\Order\Shipment $shipment
      */
-    function getShipmentItems($shipment, $order) {
+    private function getShipmentItems($shipment, $order)
+    {
         /**
          * @param \Magento\Sales\Api\Data\ShipmentItemInterface $item
          * @param \Magento\Sales\Model\Order $order
@@ -130,7 +135,8 @@ class Orders
      * @param \Magento\Sales\Model\Order $order
      * @param \Magento\Sales\Model\Order\Shipment $shipment
      */
-    function getShipmentTracking($shipment, $order) {
+    private function getShipmentTracking($shipment, $order)
+    {
         /**
          * @param \Magento\Sales\Model\Order $order
          * @param \Magento\Sales\Api\Data\ShipmentTrackInterface $item
@@ -150,7 +156,8 @@ class Orders
     }
 
     /** @param \Magento\Sales\Model\Order $order */
-    function getShipments($order) {
+    private function getShipments($order)
+    {
         /** @param \Magento\Sales\Model\Order\Shipment $shipment */
         $buildShipment = function ($shipment) use ($order) {
             return [
@@ -165,7 +172,8 @@ class Orders
     /**
      * @param \Magento\Sales\Model\Order $order
      */
-    function getPayment($order) {
+    private function getPayment($order)
+    {
         /** @var \Magento\Sales\Api\Data\OrderPaymentInterface $payment */
         $payment = $order->getPayment();
 
@@ -187,7 +195,8 @@ class Orders
      * @param \Magento\Sales\Model\Order $order
      * @param \Magento\Sales\Model\Order\Invoice $invoice
      */
-    function getInvoiceItems($invoice, $order) {
+    private function getInvoiceItems($invoice, $order)
+    {
         /**
          * @param \Magento\Sales\Api\Data\InvoiceItemInterface $item
          * @param \Magento\Sales\Model\Order $order
@@ -209,7 +218,8 @@ class Orders
     }
 
     /** @param \Magento\Sales\Model\Order $order */
-    function getInvoices($order) {
+    private function getInvoices($order)
+    {
         /** @param \Magento\Sales\Model\Order\Invoice $invoice */
         $buildInvoice = function ($invoice) use ($order) {
             return [
@@ -230,7 +240,8 @@ class Orders
      * @param \Magento\Sales\Model\Order $order
      * @param \Magento\Sales\Model\Order\Creditmemo $credit
      */
-    function getCreditItems($credit, $order) {
+    private function getCreditItems($credit, $order)
+    {
         /**
          * @param \Magento\Sales\Api\Data\CreditmemoItemInterface $item
          * @param \Magento\Sales\Model\Order $order
@@ -252,7 +263,8 @@ class Orders
     }
 
     /** @param \Magento\Sales\Model\Order $order */
-    function getCreditMemos($order) {
+    private function getCreditMemos($order)
+    {
         /** @param \Magento\Sales\Model\Order\Creditmemo $credit */
         $buildCredit = function ($credit) use ($order) {
             return [
@@ -270,7 +282,8 @@ class Orders
     }
 
     /** @param \Magento\Sales\Model\Order $order */
-    function getOrder($order, ?int $userId) {
+    public function getOrder($order, ?int $userId)
+    {
         $coupon = $order->getCouponCode();
         return [
             'id' => $order->getId(),
