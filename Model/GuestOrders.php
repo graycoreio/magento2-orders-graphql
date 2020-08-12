@@ -5,6 +5,7 @@ namespace Graycore\OrderGraphQl\Model;
 
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
+use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
@@ -70,7 +71,17 @@ class GuestOrders implements ResolverInterface
             );
         }
 
-        // TODO: throw error if cart is associated with a customer
+        $cartCustomerId = (int)$cart->getCustomerId();
+
+        /* Not a guest cart, throw */
+        if (0 !== $cartCustomerId) {
+            throw new GraphQlAuthorizationException(
+                __(
+                    'The cart "%masked_cart_id" is not a guest cart',
+                    ['masked_cart_id' => $cartHash]
+                )
+            );
+        }
 
         return $cart;
     }
