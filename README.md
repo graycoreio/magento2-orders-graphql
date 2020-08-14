@@ -30,11 +30,13 @@ query GetGuestOrders {
 
 ### Customer Orders
 
-For customer carts, use the `graycoreCustomerOrders` query. There are no parameters. Authenticate the customer according to normal Magento procedures.
+For customer carts, use the `graycoreCustomerOrders` query. There is an optional `orderNumber` parameter which will return a specific order. Not passing `orderNumber` will return all of the authenticated customer's orders. Authenticate the customer according to normal Magento procedures.
 
 ```gql
 query GetCustomerOrders {
-  graycoreCustomerOrders {
+  graycoreCustomerOrders(
+    orderNumber: "0000000001"
+  ) {
     orders {
       id
     }
@@ -44,4 +46,4 @@ query GetCustomerOrders {
 
 ### Schema
 
-Refer to the [GraphQL schema](etc/schema.graphqls) for documentation about the type available in the queries.
+Refer to the [GraphQL schema](etc/schema.graphqls) for documentation about the types available in the queries.

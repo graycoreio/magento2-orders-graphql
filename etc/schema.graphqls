@@ -1,7 +1,9 @@
 type Query {
-    graycoreCustomerOrders: GraycoreOrders @doc(description: "Retrieves all order associated with the customer's account. Throws an error if there is not an authorized customer.") @resolver(class: "Graycore\\OrderGraphQl\\Model\\CustomerOrders") @cache(cacheable: false)
+    graycoreCustomerOrders(
+        orderNumber: String
+    ): GraycoreOrders @doc(description: "Retrieves all order associated with the customer's account. Throws an error if there is not an authorized customer.") @resolver(class: "Graycore\\OrderGraphQl\\Model\\CustomerOrders") @cache(cacheable: false)
     graycoreGuestOrders(
-        cartId: String
+        cartId: String!
     ): GraycoreOrders @doc(description: "Retrieves the order associated with the specified cart. Throws an error if the cart is not found or there isn't an order associated with it.") @resolver(class: "Graycore\\OrderGraphQl\\Model\\GuestOrders") @cache(cacheable: false)
 }
 
@@ -65,7 +67,7 @@ type GraycoreOrderShipment {
     items: [GraycoreOrderShipmentItem] @doc(description: "The items included in this shipment.")
 }
 
-type GraycoreOrderPayment {
+interface GraycoreOrderPayment {
     payment_id: Int @doc(description: "The payment ID.")
     order_id: Int @doc(description: "The order ID.")
     method: String @doc(description: "The payment method used to place the order.")

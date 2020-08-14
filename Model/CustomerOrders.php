@@ -56,10 +56,15 @@ class CustomerOrders implements ResolverInterface
         $items = [];
         $orders = $this->collectionFactory->create($userId);
 
+        if (array_key_exists('orderNumber', $args)) {
+            $orders = $orders->addFieldToFilter('increment_id', $args['orderNumber']);
+        }
+
         /** @var \Magento\Sales\Model\Order $order */
         foreach ($orders as $order) {
             $items[] = $this->orders->getOrder($order, $userId);
         }
+
         return ['orders' => $items];
     }
 }
