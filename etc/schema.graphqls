@@ -67,7 +67,7 @@ type GraycoreOrderShipment {
     items: [GraycoreOrderShipmentItem] @doc(description: "The items included in this shipment.")
 }
 
-interface GraycoreOrderPayment {
+type GraycoreOrderPayment {
     payment_id: Int @doc(description: "The payment ID.")
     order_id: Int @doc(description: "The order ID.")
     method: String @doc(description: "The payment method used to place the order.")
