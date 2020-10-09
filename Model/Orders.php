@@ -226,6 +226,9 @@ class Orders
                 'items' => $this->getInvoiceItems($invoice, $order),
                 'grand_total' => $invoice->getGrandTotal(),
                 'subtotal' => $invoice->getSubtotal(),
+                'discount' => $invoice->getDiscountAmount(),
+                'tax' => $invoice->getTaxAmount(),
+                'shipping' => $invoice->getShippingAmount(),
                 'billing_address' => $this->getAddress($invoice->getBillingAddress(), $order->getId()),
                 'shipping_address' => $this->getAddress($invoice->getShippingAddress(), $order->getId()),
                 'payment' => $order->getPayment(),
@@ -285,6 +288,7 @@ class Orders
     public function getOrder($order, ?int $userId)
     {
         $coupon = $order->getCouponCode();
+
         return [
             'id' => $order->getId(),
             'order_number' => $order->getIncrementId(),
@@ -293,6 +297,9 @@ class Orders
             'updated_at' => $order->getUpdatedAt(),
             'grand_total' => $order->getGrandTotal(),
             'subtotal' => $order->getSubtotal(),
+            'discount' => $order->getDiscountAmount(),
+            'tax' => $order->getTaxAmount(),
+            'shipping' => $order->getShippingAmount(),
             'status' => $order->getStatus(),
             'shipments' => $this->getShipments($order),
             'applied_codes' => $coupon ? [$coupon] : [],

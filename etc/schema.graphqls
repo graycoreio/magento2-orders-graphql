@@ -81,9 +81,12 @@ type GraycoreOrderPayment {
 type GraycoreOrderInvoice {
     items: [GraycoreOrderShipmentItem] @doc(description: "The items being shipped for this invoice.")
     grand_total: Float @doc(description: "The grand total of this invoice.")
-    subtotal: Float @doc(description: "The subtotal of this invoice.")
+    subtotal: Float @doc(description: "The subtotal of this invoice excluding taxes.")
+    discount: Float @doc(description: "The amount of total discounts applied to this invoice.")
+    tax: Float @doc(description: "The amount of total tax applied to this invoice.")
+    shipping: FLoat @doc(description: "The shipping cost for this invoice.")
     billing_address: GraycoreOrderAddress @doc(description: "The billing address of this invoice.")
-    shipping_address: GraycoreOrderAddress @doc(description: "The shipping address of this invoice.")
+    shipping_address: GraycoreOrderAddress @doc(description: "The shipping asddress of this invoice.")
     payment: GraycoreOrderPayment @doc(description: "The payment used for this invoice.")
 }
 
@@ -94,7 +97,10 @@ type GraycoreOrder @doc(description: "Order mapping fields") {
     created_at: String @doc(description: "When the order was created.")
     updated_at: String @doc(description: "When the order was last updated.")
     grand_total: Float @doc(description: "The grand total of the order.")
-    subtotal: Float @doc(description: "The subtotal of the order.")
+    subtotal: Float @doc(description: "The subtotal of the order excluding taxes.")
+    discount: Float @doc(description: "The amount of total discounts applied to this order.")
+    tax: Float @doc(description: "The amount of total tax applied to this order.")
+    shipping: FLoat @doc(description: "The shipping cost for this order.")
     status: String @doc(description: "The current status of the order.")
     applied_codes: [String]! @doc(description: "Any coupon codes that have been applied to the order.")
     items: [GraycoreOrderItem] @doc(description: "All items included in the order.")
