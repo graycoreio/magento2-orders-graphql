@@ -222,19 +222,13 @@ class Orders
     {
         /** @param \Magento\Sales\Model\Order\Invoice $invoice */
         $buildInvoice = function ($invoice) use ($order) {
-            $subtotal = $invoice->getSubtotal();
-            $subtotalInclTax = $invoice->getSubtotalInclTax();
-            $discount = $invoice->getDiscountAmount();
-
             return [
                 'items' => $this->getInvoiceItems($invoice, $order),
                 'grand_total' => $invoice->getGrandTotal(),
-                'subtotal' => $subtotal,
-                'subtotal_including_tax' => $subtotalInclTax,
-                'subtotal_with_discount_excluding_tax' => $subtotal - $discount,
-                'subtotal_with_discount_including_tax' => $subtotalInclTax - $discount,
-                'discount' => $discount,
+                'subtotal' => $invoice->getSubtotal(),
+                'discount' => $invoice->getDiscountAmount(),
                 'tax' => $invoice->getTaxAmount(),
+                'shipping' => $invoice->getShippingAmount(),
                 'billing_address' => $this->getAddress($invoice->getBillingAddress(), $order->getId()),
                 'shipping_address' => $this->getAddress($invoice->getShippingAddress(), $order->getId()),
                 'payment' => $order->getPayment(),
@@ -294,9 +288,6 @@ class Orders
     public function getOrder($order, ?int $userId)
     {
         $coupon = $order->getCouponCode();
-        $subtotal = $order->getSubtotal();
-        $subtotalInclTax = $order->getSubtotalInclTax();
-        $discount = $order->getDiscountAmount();
 
         return [
             'id' => $order->getId(),
@@ -305,12 +296,10 @@ class Orders
             'created_at' => $order->getCreatedAt(),
             'updated_at' => $order->getUpdatedAt(),
             'grand_total' => $order->getGrandTotal(),
-            'subtotal' => $subtotal,
-            'subtotal_including_tax' => $subtotalInclTax,
-            'subtotal_with_discount_excluding_tax' => $subtotal - $discount,
-            'subtotal_with_discount_including_tax' => $subtotalInclTax - $discount,
-            'discount' => $discount,
+            'subtotal' => $order->getSubtotal(),
+            'discount' => $order->getDiscountAmount(),
             'tax' => $order->getTaxAmount(),
+            'shipping' => $order->getShippingAmount(),
             'status' => $order->getStatus(),
             'shipments' => $this->getShipments($order),
             'applied_codes' => $coupon ? [$coupon] : [],
